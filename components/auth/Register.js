@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, TextInput, Pressable ,StyleSheet } from "react-native";
+import { Text, View, TextInput, Pressable ,StyleSheet  } from "react-native";
 import * as Animatable from 'react-native-animatable';
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -34,12 +34,13 @@ const Register = (props) => {
       {({ handleChange, errors, handleBlur, handleSubmit, values }) => (
         <View style={styles.container}>
             <Text style={{fontSize:24 , fontWeight:'bold'}}>Register</Text>
+          
           <TextInput
             onChangeText={handleChange("name")}
             onBlur={handleBlur("name")}
             value={values.name}
             placeholder="name"
-            style={[styles.myInput , {marginTop : 50}]}
+            style={[styles.myInput , {marginTop : 30}]}
           />
           {errors.name && <Animatable.Text animation="fadeIn" style={styles.errorText}>{errors.name}</Animatable.Text>}
           <TextInput
@@ -104,7 +105,8 @@ const styles = StyleSheet.create({
         width : '100%',
         justifyContent:'center',
         alignItems:'center'
-    }
+    },
+ 
 })
 
 export default Register;
