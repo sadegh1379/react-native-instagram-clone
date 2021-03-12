@@ -5,26 +5,24 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import firebase from 'firebase';
 
-const Register = (props) => {
+
+const Login = (props) => {
+
   const SignupSchema = Yup.object().shape({
-    name: Yup.string()
-      .min(2, "Too Short!")
-      .max(20, "Too Long!")
-      .required("Required"),
     email: Yup.string().email("Invalid email").required("Required"),
     password : Yup.string().required('required!').min(2 , 'too short').max(20 , 'too long')
   });
 
   return (
     <Formik
-      initialValues={{ name: "", email: "", password: "" }}
+      initialValues={{ email: "", password: "" }}
       onSubmit={(values) =>{
           console.log("values : " , values);
           const user = {
               email : values.email,
               password : values.password
           }
-          firebase.auth().createUserWithEmailAndPassword(user.email , user.password)
+          firebase.auth().signInWithEmailAndPassword(user.email , user.password)
           .then((res)=>{
               console.log(res)
           }).catch(err=>console.log(err));
@@ -33,22 +31,13 @@ const Register = (props) => {
     >
       {({ handleChange, errors, handleBlur, handleSubmit, values }) => (
         <View style={styles.container}>
-            <Text style={{fontSize:24 , fontWeight:'bold'}}>Register</Text>
-          <TextInput
-            onChangeText={handleChange("name")}
-            onBlur={handleBlur("name")}
-            value={values.name}
-            placeholder="name"
-            style={[styles.myInput , {marginTop : 50}]}
-          />
-          {errors.name && <Animatable.Text animation="fadeIn" style={styles.errorText}>{errors.name}</Animatable.Text>}
+            <Text style={{fontSize:24 , fontWeight:'bold'}}>Login</Text>
           <TextInput
             onChangeText={handleChange("email")}
             onBlur={handleBlur("email")}
             value={values.email}
             placeholder="email"
-            style={styles.myInput}
-
+            style={[styles.myInput , {marginTop : 50}]}
           />
             {errors.email && <Animatable.Text animation="fadeIn"  style={styles.errorText}>{errors.email}</Animatable.Text>}
           <TextInput
@@ -58,11 +47,10 @@ const Register = (props) => {
             secureTextEntry={true}
             placeholder="password"
             style={styles.myInput}
-
           />
          {errors.password && <Animatable.Text animation="fadeIn" style={styles.errorText}>{errors.password}</Animatable.Text>}
           <Pressable onPress={handleSubmit} style={styles.press}>
-            <Text style={{fontWeight : 'bold'}}>Sin Up</Text>
+            <Text style={{fontWeight : 'bold'}}>Log In</Text>
           </Pressable>
         </View>
       )}
@@ -104,7 +92,7 @@ const styles = StyleSheet.create({
         width : '100%',
         justifyContent:'center',
         alignItems:'center'
-    }
+    },
 })
 
-export default Register;
+export default Login;
