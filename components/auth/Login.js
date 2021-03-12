@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, TextInput, Pressable, StyleSheet } from "react-native";
+import { Text, View, TextInput, Pressable, StyleSheet , Image, ActivityIndicator } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -7,7 +7,7 @@ import firebase from "firebase";
 
 const Login = (props) => {
   const [passwordError, setPasswordError] = useState('');
-
+  const [loading , setLoading] = useState(false);
   const SignupSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Required"),
     password: Yup.string()
@@ -26,27 +26,31 @@ const Login = (props) => {
     <Formik
       initialValues={{ email: "", password: "" }}
       onSubmit={(values) => {
+        setLoading(true);
         console.log("values : ", values);
-        const user = {
-          email: values.email,
-          password: values.password,
-        };
         firebase
           .auth()
-          .signInWithEmailAndPassword(user.email, user.password)
+          .signInWithEmailAndPassword(values.email, values.password)
           .then((res) => {
             console.log(res);
+            setLoading(false);
           })
+          
           .catch((err) =>{
             setPasswordError('email or password is not correct !');
             timer(3000);
+            setLoading(false);
           }) 
+         
       }}
       validationSchema={SignupSchema}
     >
       {({ handleChange, errors, handleBlur, handleSubmit, values }) => (
         <View style={styles.container}>
-          <Text style={{ fontSize: 24, fontWeight: "bold" }}>Login</Text>
+          {/* <Text style={{ fontSize: 24, fontWeight: "bold" }}>Login</Text> */}
+          <View style={{justifyContent:'center' , alignItems:'center'}}>
+            <Image style={{width : 100 , height : 100}} source={require('../../assets/images/head.jpg')} />
+          </View>
           <View>
           {passwordError.length > 0 ? (
             <View style={styles.cError}>
@@ -89,7 +93,11 @@ const Login = (props) => {
           </View>
          
           <Pressable onPress={handleSubmit} style={styles.press}>
-            <Text style={{ fontWeight: "bold" }}>Log In</Text>
+          {loading ? (
+              <ActivityIndicator color="red" />
+            ) : (
+              <Text style={{ fontWeight: "bold" }}>Login</Text>
+            )}
           </Pressable>
         </View>
       )}
