@@ -47,11 +47,14 @@ const Login = (props) => {
       {({ handleChange, errors, handleBlur, handleSubmit, values }) => (
         <View style={styles.container}>
           <Text style={{ fontSize: 24, fontWeight: "bold" }}>Login</Text>
-          {passwordError && (
+          <View>
+          {passwordError.length > 0 ? (
             <View style={styles.cError}>
               <Text>{passwordError}</Text>
             </View>
-          )}
+          ) : null}
+          </View>
+         
          
 
           <TextInput
@@ -61,11 +64,14 @@ const Login = (props) => {
             placeholder="email"
             style={[styles.myInput, { marginTop: 50 }]}
           />
-          {errors.email && (
+          <View>
+          {errors.email ? (
             <Animatable.Text animation="fadeIn" style={styles.errorText}>
               {errors.email}
             </Animatable.Text>
-          )}
+          ) : null}
+          </View>
+          
           <TextInput
             onChangeText={handleChange("password")}
             onBlur={handleBlur("password")}
@@ -74,11 +80,14 @@ const Login = (props) => {
             placeholder="password"
             style={styles.myInput}
           />
-          {errors.password && (
+          <View>
+          {errors.password ? (
             <Animatable.Text animation="fadeIn" style={styles.errorText}>
               {errors.password}
             </Animatable.Text>
-          )}
+          ) : null}
+          </View>
+         
           <Pressable onPress={handleSubmit} style={styles.press}>
             <Text style={{ fontWeight: "bold" }}>Log In</Text>
           </Pressable>
@@ -95,7 +104,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     alignSelf: "center",
-    // backgroundColor:'#fff',
+    
     paddingTop: 100,
   },
   errorText: {
@@ -128,7 +137,8 @@ const styles = StyleSheet.create({
     width: "100%",
     fontSize: 15,
     fontWeight: "bold",
-    backgroundColor: "#E91E63",
+    borderWidth : 1,
+    borderColor : '#E91E63',
     marginTop: 10,
     borderRadius: 10,
     textAlign: "center",

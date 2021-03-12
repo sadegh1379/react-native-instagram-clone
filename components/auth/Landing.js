@@ -8,8 +8,8 @@ export default function Landing({ navigation }) {
           <Text style={styles.headText}>Instagram</Text>
         </View>
         <View style={styles.body}>
-          <Pressable style={styles.myPres} onPress={()=>navigation.navigate('Register')}>Register</Pressable>
-          <Pressable style={styles.myPres} onPress={()=>navigation.navigate('Login')}>Login</Pressable>
+          <Pressable style={styles.myPres} onPress={()=>navigation.navigate('Register')}><Text>Register</Text></Pressable>
+          <Pressable style={styles.myPres} onPress={()=>navigation.navigate('Login')}><Text>Login</Text></Pressable>
         </View>
     </View>
   );
@@ -38,6 +38,8 @@ const styles = StyleSheet.create({
     borderWidth : 1,
     borderColor : 'red',
     marginTop : 10,
-    borderRadius : 10
+    borderRadius : 10,
+    justifyContent:'center',
+    alignItems:'center'
   }
 });

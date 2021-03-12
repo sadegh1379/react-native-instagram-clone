@@ -42,7 +42,7 @@ const Register = (props) => {
             placeholder="name"
             style={[styles.myInput , {marginTop : 30}]}
           />
-          {errors.name && <Animatable.Text animation="fadeIn" style={styles.errorText}>{errors.name}</Animatable.Text>}
+          {errors.name ? <Animatable.Text animation="fadeIn" style={styles.errorText}>{errors.name}</Animatable.Text> : null}
           <TextInput
             onChangeText={handleChange("email")}
             onBlur={handleBlur("email")}
@@ -51,7 +51,7 @@ const Register = (props) => {
             style={styles.myInput}
 
           />
-            {errors.email && <Animatable.Text animation="fadeIn"  style={styles.errorText}>{errors.email}</Animatable.Text>}
+            {errors.email ? <Animatable.Text animation="fadeIn"  style={styles.errorText}>{errors.email}</Animatable.Text> : null}
           <TextInput
             onChangeText={handleChange("password")}
             onBlur={handleBlur("password")}

@@ -61,7 +61,7 @@ export default function App() {
     return (
       <NavigationContainer >
         <StatusBar/>
-          <Stack.Navigator  >
+          <Stack.Navigator >
             <Stack.Screen name="Landing" component={Landing} options={{headerShown : false}}/>
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="Login" component={Login} />
