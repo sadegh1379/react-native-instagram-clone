@@ -60,7 +60,7 @@ export default function Add() {
           ratio={"1:1"}
         />
       </View>
-      <View>
+      <View style={{flexDirection:'row' , justifyContent:'space-between' , marginTop : 10}}>
       <Pressable
             style={styles.button}
             onPress={() => {
@@ -78,7 +78,7 @@ export default function Add() {
             pickImage()
           }}
         >
-          <Text style={{fontWeight:'bold'}}>Pick In Gallery</Text>
+          <Text style={{fontWeight:'bold'}}>Gallery</Text>
         </Pressable>
         <Pressable
           style={styles.button}
@@ -86,7 +86,7 @@ export default function Add() {
             takePicture();
           }}
         >
-          <Text style={{fontWeight:'bold'}}>Take a Picture</Text>
+          <Text style={{fontWeight:'bold' , alignSelf:'center'}}>Take</Text>
         </Pressable>
       </View>
       {image && (
@@ -110,10 +110,13 @@ const styles = StyleSheet.create({
   button: {
     padding: 10,
     // backgroundColor:'#e91e63',
-    alignItems: "center",
     borderWidth: 1,
     borderColor: "#e91e63",
-    margin: 5,
-    borderRadius : 10
+    margin: 3,
+    borderRadius : 10,
+    width : '30%',
+    justifyContent:'center',
+    alignItems:'center',
+    
   },
 });
