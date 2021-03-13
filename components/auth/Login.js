@@ -27,7 +27,6 @@ const Login = (props) => {
       initialValues={{ email: "", password: "" }}
       onSubmit={(values) => {
         setLoading(true);
-        console.log("values : ", values);
         firebase
           .auth()
           .signInWithEmailAndPassword(values.email, values.password)
