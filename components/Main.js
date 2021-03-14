@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUser } from "../redux/actions";
+import { fetchUser , fetchUserPosts } from "../redux/actions";
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Profile from './main/Profile';
@@ -16,6 +16,7 @@ const Main = (props) => {
 
   useEffect(() => {
     dispatch(fetchUser());
+    dispatch(fetchUserPosts());
   }, []);
 
   return (
