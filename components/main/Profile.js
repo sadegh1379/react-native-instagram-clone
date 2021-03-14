@@ -7,8 +7,10 @@ import { Avatar, Caption } from 'react-native-paper';
 
 const Profile = (props)=>{
     const user = useSelector(state=>state.user);
+    const newUser = props.route.params;
+
     const {currentUser , posts} = user;
-    console.log(posts)
+    console.log(newUser)
      return(
       <Animatable.View  animation="bounceInUp" style={styles.container}>
             <View style={styles.headContainer}>

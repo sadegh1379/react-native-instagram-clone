@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
-import { Text, View, ActivityIndicator } from "react-native";
+import {  View, ActivityIndicator } from "react-native";
 import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -94,6 +94,7 @@ export default function App() {
             name="Save"
             component={Save}
           />
+          
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
