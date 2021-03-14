@@ -1,5 +1,5 @@
 import React ,{useState , useEffect} from 'react';
-import { Text , StyleSheet , View ,FlatList , Image } from 'react-native'
+import { Text , StyleSheet , View ,FlatList , Image, TouchableOpacity } from 'react-native'
 import * as Animatable from 'react-native-animatable';
 import {useSelector} from 'react-redux';
 import { Avatar, Caption } from 'react-native-paper';
@@ -9,6 +9,7 @@ require("firebase/firestore");
 const Profile = (props)=>{
     const [myUser , setMyUser]= useState([]);
     const [userPost , setUserPost] = useState([]);
+    const [folowing , setFollowing] = useState(false);
     const user = useSelector(state=>state.user);
     // const newUser = props.route.params.user;
 
@@ -48,6 +49,27 @@ const Profile = (props)=>{
             })
         }
     },[props.route.params.uid] )
+
+    const onFollow = ()=>{
+        firebase.firestore()
+        .collection("following")
+        .doc(firebase.auth().currentUser.uid)
+        .collection("userFollowing")
+        .doc(props.route.params.uid)
+        .set({})
+
+        setFollowing(true)
+    }
+
+    const onunFollow = ()=>{
+        firebase.firestore()
+        .collection("following")
+        .doc(firebase.auth().currentUser.uid)
+        .collection("userFollowing")
+        .doc(props.route.params.uid)
+        .delete()
+        setFollowing(false)
+    }
      return(
       <Animatable.View  animation="bounceInUp" style={styles.container}>
             <View style={styles.headContainer}>
@@ -56,7 +78,30 @@ const Profile = (props)=>{
                      <Text style={{fontWeight :'bold'}}>{myUser.name}</Text>
                      <Caption style={{marginTop : 10}}>{myUser.email}</Caption>
                  </View>
+                
             </View>
+            <View style={{borderBottomWidth : 2,borderBottomColor:'grey'}}>
+            {props.route.params.uid !== firebase.auth().currentUser.uid ? 
+                   (
+                       <View>
+                           {folowing ? (
+                            <TouchableOpacity onPress={()=>onunFollow()} style={[styles.follow , {backgroundColor:'#e91e63'}]}>
+                                <Text>
+                                  Following
+                                </Text>
+                            </TouchableOpacity>
+                           ) : (
+                          <TouchableOpacity onPress={()=>onFollow()}  style={[styles.follow , {backgroundColor:'#fce4ec' }]}>
+                                <Text>
+                                    UnFollow
+                                </Text>
+                            </TouchableOpacity>
+                           )}
+                       </View>
+                   ) : null
+                           }
+            </View>
+
             <View style={styles.bodyContainer}>
             <FlatList
                     numColumns={3}
@@ -84,14 +129,20 @@ const styles= StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between',
         alignItems:'center',
-        borderBottomWidth : 2,
-        borderBottomColor:'grey'
+       
     },
     bodyContainer:{
         flex : 1,
         margin : 5
     },
-    
+    follow :{
+        padding : 10,
+        borderRadius : 10,
+        justifyContent:'center',
+        alignItems:'center',
+        margin : 5
+        
+    }
 
    
 })
