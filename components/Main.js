@@ -7,6 +7,7 @@ import Profile from './main/Profile';
 import Feed from './main/Feed';
 import EmptyScreen from './static/Empty';
 import Search from "./main/Search";
+import firebase from 'firebase'
 
 
 const Tab = createMaterialBottomTabNavigator();
@@ -48,6 +49,12 @@ const Main = (props) => {
         }}     
         />
         <Tab.Screen name="Profile" component={Profile}
+         listeners={({navigation})=>({
+            tabPress:event=>{
+                event.preventDefault();
+                navigation.navigate('Profile',{uid : firebase.auth().currentUser.uid});
+            }
+        })}
         options={{
             tabBarIcon : ({size , color})=>(<MaterialCommunityIcons name="account" size={24} color={color}/>)
         }}     

@@ -41,7 +41,7 @@ const Search = (props)=>{
                  horizontal={false}
                  data={users}
                  renderItem={({item})=>(
-                     <TouchableOpacity onPress={()=>props.navigation.navigate('Profile' , {user : item})} style={{padding : 10 , backgroundColor:'#e91e63',justifyContent:'center' , alignItems:'center' , borderRadius:10 , margin : 5}}>
+                     <TouchableOpacity onPress={()=>props.navigation.navigate('Profile' , {uid : item.id})} style={{padding : 10 , backgroundColor:'#e91e63',justifyContent:'center' , alignItems:'center' , borderRadius:10 , margin : 5}}>
                          <Text style={{fontSize:12 , fontWeight:'bold'}}>{item.name}</Text>
                      </TouchableOpacity>
                  )}
