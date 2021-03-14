@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Pressable, Image ,Platform } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  Platform,
+} from "react-native";
 import { Camera } from "expo-camera";
-import * as ImagePicker from 'expo-image-picker';
-import * as Animatable from 'react-native-animatable';
+import * as ImagePicker from "expo-image-picker";
+import * as Animatable from "react-native-animatable";
 
-
-export default function Add() {
+export default function Add({navigation}) {
   const [hasCameraPermission, setHasCameraPermission] = useState(true);
   const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
 
@@ -17,12 +23,12 @@ export default function Add() {
     (async () => {
       // const { status } = await Camera.requestPermissionsAsync();
       // setHasCameraPermission(status === 'granted');
-     if(Platform.OS !== 'web'){
-      const GalleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      setHasGalleryPermission(GalleryStatus.status !== 'granted') 
-     }else{
-       setHasGalleryPermission(true);
-     }
+      if (Platform.OS !== "web") {
+        const GalleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        setHasGalleryPermission(GalleryStatus.status !== "granted");
+      } else {
+        setHasGalleryPermission(true);
+      }
     })();
   }, []);
 
@@ -42,7 +48,7 @@ export default function Add() {
     if (!result.cancelled) {
       setImage(result.uri);
     }
-  }
+  };
 
   if (hasCameraPermission === null || hasGalleryPermission === null) {
     return <View />;
@@ -51,7 +57,7 @@ export default function Add() {
     return <Text>No access to camera</Text>;
   }
   return (
-    <View style={styles.container}>
+    <Animatable.View animation="bounceInUp" style={styles.container}>
       <View style={{ flex: 1 }}>
         <Camera
           ref={(ref) => setCamera(ref)}
@@ -60,47 +66,80 @@ export default function Add() {
           ratio={"1:1"}
         />
       </View>
-      <View style={{flexDirection:'row' , justifyContent:'space-between' , marginTop : 10}}>
-      <Pressable
-            style={styles.button}
-            onPress={() => {
-              setType(
-                type === Camera.Constants.Type.back
-                  ? Camera.Constants.Type.front
-                  : Camera.Constants.Type.back
-              );
-            }}>
-            <Text  style={{fontWeight:'bold'}}> Flip </Text>
-        </Pressable>
-        <Pressable
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-around",
+          marginTop: 10,
+        }}
+      >
+        <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            pickImage()
+            setType(
+              type === Camera.Constants.Type.back
+                ? Camera.Constants.Type.front
+                : Camera.Constants.Type.back
+            );
           }}
         >
-          <Text style={{fontWeight:'bold'}}>Gallery</Text>
-        </Pressable>
-        <Pressable
+          <Text style={{ fontWeight: "bold" }}> Flip </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            pickImage();
+          }}
+        >
+          <Text style={{ fontWeight: "bold" }}>Gallery</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
           style={styles.button}
           onPress={() => {
             takePicture();
           }}
         >
-          <Text style={{fontWeight:'bold' , alignSelf:'center'}}>Take</Text>
-        </Pressable>
+          <Text style={{ fontWeight: "bold", alignSelf: "center" }}>Take</Text>
+        </TouchableOpacity>
       </View>
+
+     
       {image && (
-        <Animatable.View animation="bounceInUp" style={{ flex: 1 , margin :10 , borderWidth : 1 , borderColor :'red' , borderRadius : 10 }}>
+        <Animatable.View
+          animation="bounceInUp"
+          style={{
+            flex: 1,
+            margin: 10,
+            borderWidth: 1,
+            borderColor: "red",
+            borderRadius: 10,
+          }}
+        >
           <Image source={{ uri: image }} style={{ flex: 1 }} />
         </Animatable.View>
       )}
-    </View>
+       {image && (
+        <View>
+          <TouchableOpacity
+            style={{ padding: 10, backgroundColor: "#ec407a", width: "100%" }}
+            onPress={() => {
+              navigation.navigate('Save' , {image});
+            }}
+          >
+            <Text style={{ fontWeight: "bold", alignSelf: "center" }}>
+              Save
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+    </Animatable.View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // backgroundColor:'#fff'
   },
   camera: {
     flex: 1,
@@ -113,10 +152,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#e91e63",
     margin: 3,
-    borderRadius : 10,
-    width : '30%',
-    justifyContent:'center',
-    alignItems:'center',
-    
+    borderRadius: 10,
+    width: "30%",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

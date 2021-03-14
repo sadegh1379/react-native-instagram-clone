@@ -12,6 +12,7 @@ import { Provider } from "react-redux";
 import { Store } from "./redux/store";
 import Main from "./components/Main";
 import Add from "./components/main/Add";
+import Save from "./components/main/Save";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCv_SvUSSaeysGwzyfHjTfKQxZIQD8eMXg",
@@ -88,6 +89,10 @@ export default function App() {
           <Stack.Screen
             name="Add"
             component={Add}
+          />
+           <Stack.Screen
+            name="Save"
+            component={Save}
           />
         </Stack.Navigator>
       </NavigationContainer>
