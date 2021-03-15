@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import {  View, ActivityIndicator } from "react-native";
 import "react-native-gesture-handler";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer , DarkTheme } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Landing from "./components/auth/Landing";
 import Register from "./components/auth/Register";
@@ -13,6 +13,7 @@ import { Store } from "./redux/store";
 import Main from "./components/Main";
 import Add from "./components/main/Add";
 import Save from "./components/main/Save";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyCv_SvUSSaeysGwzyfHjTfKQxZIQD8eMXg",

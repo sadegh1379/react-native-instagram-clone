@@ -16,7 +16,7 @@ export const usersReducer = (state = initState, action) => {
       return {
         ...state,
         usersLoaded: state.usersLoaded + 1,
-        users : state.users.map((user)=> user.uid === action.payload.uid ? {...state.users , posts:action.payload.posts}
+        users : state.users.map((user)=> user.uid === action.payload.uid ? {...user , posts:action.payload.posts}
          : user)
       };
     default:
