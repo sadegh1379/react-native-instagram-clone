@@ -2,7 +2,7 @@ import React ,{useState , useEffect} from 'react';
 import { Text , StyleSheet , View ,FlatList , Image, TouchableOpacity } from 'react-native'
 import * as Animatable from 'react-native-animatable';
 import {useSelector} from 'react-redux';
-import { Avatar, Caption } from 'react-native-paper';
+import { Avatar, Caption , Title } from 'react-native-paper';
 import firebase from 'firebase';
 require("firebase/firestore");
 
@@ -10,16 +10,18 @@ const Profile = (props)=>{
     const [myUser , setMyUser]= useState([]);
     const [userPost , setUserPost] = useState([]);
     const [folowing , setFollowing] = useState(false);
+    const [numOfFollowing , setNumOfFollowing] = useState(0);
     const user = useSelector(state=>state.user);
     // const newUser = props.route.params.user;
 
     // console.log(newUser)
 
     useEffect(()=>{
-        const {currentUser , posts} = user;
+        const {currentUser , posts , following} = user;
         if(props.route.params.uid === firebase.auth().currentUser.uid){
             setMyUser(currentUser);
             setUserPost(posts);
+            setNumOfFollowing(following.length);
         }else{
             firebase.firestore().collection("users")
             .doc(props.route.params.uid)
@@ -47,8 +49,22 @@ const Profile = (props)=>{
                 })
                 setUserPost(posts);
             })
+            firebase.firestore().collection("following")
+            .doc(props.route.params.uid)
+            .collection("userFollowing")
+            .onSnapshot((snap)=>{
+                const following = snap.docs.map(doc=>{
+                    return doc.id
+                })
+                setNumOfFollowing(following.length);
+            })
+            if(user.following.indexOf(props.route.params.uid) > -1){
+                setFollowing(true);
+            }else{
+                setFollowing(false)
+            }
         }
-    },[props.route.params.uid] )
+    },[props.route.params.uid , user.following] )
 
     const onFollow = ()=>{
         firebase.firestore()
@@ -58,7 +74,7 @@ const Profile = (props)=>{
         .doc(props.route.params.uid)
         .set({})
 
-        setFollowing(true)
+        
     }
 
     const onunFollow = ()=>{
@@ -68,7 +84,10 @@ const Profile = (props)=>{
         .collection("userFollowing")
         .doc(props.route.params.uid)
         .delete()
-        setFollowing(false)
+        
+    }
+    if(myUser === null){
+        return <View/>
     }
      return(
       <Animatable.View  animation="bounceInUp" style={styles.container}>
@@ -79,6 +98,21 @@ const Profile = (props)=>{
                      <Caption style={{marginTop : 10}}>{myUser.email}</Caption>
                  </View>
                 
+            </View>
+            <View style={{flexDirection:'row' , justifyContent :'space-around' , alignItems:'center'}}>
+                <View style={styles.box}>
+                    <Text>Posts</Text>
+                    <Title>{userPost.length}</Title>
+                </View>
+                <View style={styles.box}>
+                     <Text>Followers</Text>
+                     <Title>12</Title>
+                </View>
+                <View style={styles.box}>
+                    <Text>Following</Text>
+                    <Title>{numOfFollowing}</Title>
+                </View>
+               
             </View>
             <View style={{borderBottomWidth : 2,borderBottomColor:'grey'}}>
             {props.route.params.uid !== firebase.auth().currentUser.uid ? 
@@ -93,7 +127,7 @@ const Profile = (props)=>{
                            ) : (
                           <TouchableOpacity onPress={()=>onFollow()}  style={[styles.follow , {backgroundColor:'#fce4ec' }]}>
                                 <Text>
-                                    UnFollow
+                                    Follow
                                 </Text>
                             </TouchableOpacity>
                            )}
@@ -141,6 +175,13 @@ const styles= StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         margin : 5
+        
+    },
+    box:{
+        flexDirection : 'column',
+        justifyContent:'center',
+        alignItems:'center',
+        padding : 5,
         
     }
 
