@@ -9,7 +9,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
-import Loader from "../static/Loader";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import firebase from "firebase";
@@ -30,6 +29,7 @@ const Register = (props) => {
   });
 
   return (
+    <Animatable.View animation="bounceIn">
     <Formik
       initialValues={{ name: "", email: "", password: "" }}
       onSubmit={(values) => {
@@ -110,7 +110,7 @@ const Register = (props) => {
           )}
           <Pressable onPress={handleSubmit} style={styles.press}>
             {loading ? (
-              <ActivityIndicator color="red" />
+              <ActivityIndicator color="#e91e63" />
             ) : (
               <Text style={{ fontWeight: "bold" }}>Sin Up</Text>
             )}
@@ -118,6 +118,7 @@ const Register = (props) => {
         </View>
       )}
     </Formik>
+    </Animatable.View>
   );
 };
 

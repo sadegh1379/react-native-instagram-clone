@@ -39,20 +39,13 @@ const Profile = ({ navigation }) => {
 
   console.log(post);
 
-  //   if (loading) {
-  //     return (
-  //       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-  //         <ActivityIndicator color="yellow" size={50} />
-  //       </View>
-  //     );
-  //   }
   if (post.length == 0) {
     return (
       <Animatable.View animation="bounceInUp" style={styles.container}>
         <View style={styles.headContainer}>
-          <MaterialCommunityIcons name="menu" size={24} />
-          <Title style={{ fontWeight: "bold" }}>Instagram</Title>
-          <MaterialCommunityIcons name="home" size={24} />
+          <MaterialCommunityIcons color="#fff" name="menu" size={24} />
+          <Title style={{ fontWeight: "bold" , color:'#FFFFFF' }}>Instagram</Title>
+          {/* <MaterialCommunityIcons name="plus" color="#fff" size={24} /> */}
         </View>
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
@@ -144,6 +137,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomColor: "grey",
     borderBottomWidth: 1,
+    backgroundColor:'#e91e63',
+    
   },
   bodyContainer: {
     flex: 1,

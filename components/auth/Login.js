@@ -23,6 +23,7 @@ const Login = (props) => {
   }
 
   return (
+    <Animatable.View animation="bounceIn">
     <Formik
       initialValues={{ email: "", password: "" }}
       onSubmit={(values) => {
@@ -36,8 +37,8 @@ const Login = (props) => {
           })
           
           .catch((err) =>{
-            setPasswordError('email or password is not correct !');
-            timer(3000);
+            setPasswordError('email or password is not correct and Check network !');
+            timer(4000);
             setLoading(false);
           }) 
          
@@ -93,7 +94,7 @@ const Login = (props) => {
          
           <Pressable onPress={handleSubmit} style={styles.press}>
           {loading ? (
-              <ActivityIndicator color="red" />
+              <ActivityIndicator color="#e91e63" />
             ) : (
               <Text style={{ fontWeight: "bold" }}>Login</Text>
             )}
@@ -101,6 +102,7 @@ const Login = (props) => {
         </View>
       )}
     </Formik>
+    </Animatable.View>
   );
 };
 
