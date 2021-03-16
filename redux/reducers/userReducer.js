@@ -1,4 +1,4 @@
-import { FETCH_USER_DATA, FETCH_USER_FOLLOWING, FETCH_USER_POSTS } from "../types";
+import { FETCH_USER_DATA, FETCH_USER_FOLLOWING, FETCH_USER_POSTS , CLEAR_DATA } from "../types";
 
 const initState = {
   currentUser: null,
@@ -23,6 +23,12 @@ export const userReducer = (state = initState, action) => {
         ...state,
         following: action.payload,
       };
+    case CLEAR_DATA : 
+     return{
+         currentUser: null,
+         posts: [],
+        following: [],
+     }
 
     default:
       return state;

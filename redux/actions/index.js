@@ -1,4 +1,4 @@
-import {FETCH_USER_DATA , FETCH_USER_POSTS , FETCH_USER_FOLLOWING , FETCH_USERS_DATA , FETCH_USERS_POSTS} from '../types';
+import {FETCH_USER_DATA , FETCH_USER_POSTS , FETCH_USER_FOLLOWING  , CLEAR_DATA, FETCH_USERS_DATA , FETCH_USERS_POSTS} from '../types';
 import firebase from 'firebase';
 
 export const fetchUser = ()=>{
@@ -48,7 +48,7 @@ export const fetchUserFollowing = ()=>{
             })
             dispatch({type : FETCH_USER_FOLLOWING , payload : following})
             for(let i = 0 ; i < following.length ; i++){
-                dispatch(fetchUsers(following[i]));
+                dispatch(fetchUsers(following[i] , true));
             }
         })
     })
@@ -56,7 +56,7 @@ export const fetchUserFollowing = ()=>{
 
 // users actions
 
-export const fetchUsers = (uid)=>{
+export const fetchUsers = (uid , getPosts)=>{
     return((dispatch  , usersState)=>{
         let found = usersState().users.users.some(el => el.uid === uid)
         if(!found){
@@ -68,13 +68,15 @@ export const fetchUsers = (uid)=>{
                     let user = snap.data();
                     user.uid = snap.id;
                     dispatch({type : FETCH_USERS_DATA , payload : user})
-                    dispatch(fetchFollowingPosts(snap.id))
                     
 
                 }else{
                     console.log('dos noe exsist');
                 }
             })
+            if(getPosts){
+                dispatch(fetchFollowingPosts(uid))
+            }
         }
        
     })
@@ -88,9 +90,7 @@ export const fetchFollowingPosts = (uid)=>{
         .orderBy("creation" , "asc")
         .get()
         .then((snapshot)=>{
-            // console.log(snapshot.d_.query.C_.path.segments[1]);
            const uid = snapshot.d_.query.C_.path.segments[1];
-        //    console.log({snapshot , uid})
            let user = usersState().users.users.find(el => el.uid === uid);
 
            const posts = snapshot.docs.map(doc=>{
@@ -102,10 +102,14 @@ export const fetchFollowingPosts = (uid)=>{
                 user
             }
         })
-        //    console.log("posts : " , posts);
-           dispatch({type : FETCH_USERS_POSTS , payload :{ posts , uid}})
-        //    console.log("state : " , usersState())
+           dispatch({type : FETCH_USERS_POSTS ,payload:{ posts , uid}})
             })
            
         })
+}
+
+export const cleaData = ()=>{
+    return ((dispatch)=>{
+        dispatch({type : CLEAR_DATA})
+    })
 }

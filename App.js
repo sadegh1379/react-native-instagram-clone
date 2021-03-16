@@ -13,6 +13,7 @@ import { Store } from "./redux/store";
 import Main from "./components/Main";
 import Add from "./components/main/Add";
 import Save from "./components/main/Save";
+import Comments from "./components/main/Comments";
 
 
 const firebaseConfig = {
@@ -94,6 +95,10 @@ export default function App() {
            <Stack.Screen
             name="Save"
             component={Save}
+          />
+            <Stack.Screen
+            name="Comments"
+            component={Comments}
           />
           
         </Stack.Navigator>

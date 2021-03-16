@@ -12,7 +12,7 @@ const Login = (props) => {
     email: Yup.string().email("Invalid email").required("Required"),
     password: Yup.string()
       .required("required!")
-      .min(2, "too short")
+      .min(6, "too short")
       .max(20, "too long"),
   });
 

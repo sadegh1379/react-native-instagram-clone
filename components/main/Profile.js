@@ -1,5 +1,5 @@
 import React ,{useState , useEffect} from 'react';
-import { Text , StyleSheet , View ,FlatList , Image, TouchableOpacity } from 'react-native'
+import { Text , StyleSheet , View ,FlatList , Image, TouchableOpacity, Button } from 'react-native'
 import * as Animatable from 'react-native-animatable';
 import {useSelector} from 'react-redux';
 import { Avatar, Caption , Title } from 'react-native-paper';
@@ -86,13 +86,17 @@ const Profile = (props)=>{
         .delete()
         
     }
+    const sinout = ()=>{
+        firebase.auth().signOut();
+        alert('sinout')
+    }
     if(myUser === null){
         return <View/>
     }
      return(
       <Animatable.View  animation="bounceInUp" style={styles.container}>
             <View style={styles.headContainer}>
-                 <Avatar.Image size={100} style={styles.avatar}  />
+                 <Avatar.Text size={100} style={styles.avatar} label="XD"  />
                  <View style={{justifyContent:'flex-start'}}>
                      <Text style={{fontWeight :'bold'}}>{myUser.name}</Text>
                      <Caption style={{marginTop : 10}}>{myUser.email}</Caption>
@@ -132,7 +136,7 @@ const Profile = (props)=>{
                             </TouchableOpacity>
                            )}
                        </View>
-                   ) : null
+                   ) : (<Button title="sinOut" onPress={()=>sinout()}/>)
                            }
             </View>
 

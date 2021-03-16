@@ -6,14 +6,15 @@ import {
   FlatList,
   Image,
   ActivityIndicator,
-  TouchableOpacity
+  TouchableOpacity,
+  Pressable,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { useSelector } from "react-redux";
-import { Title , Avatar, Caption } from "react-native-paper";
+import { Title, Avatar, Caption } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-const Profile = ({navigation}) => {
+const Profile = ({ navigation }) => {
   const usersState = useSelector((state) => state.users);
   const userState = useSelector((state) => state.user);
 
@@ -75,20 +76,53 @@ const Profile = ({navigation}) => {
           horizontal={false}
           data={post}
           renderItem={({ item }) => (
-            <View style={{ flex : 1 , margin : 5 , borderWidth : 1 , borderColor : 'grey'}}>
-                <TouchableOpacity onPress={()=>navigation.navigate('Profile'  , {uid : item.user.uid})}>
-              <View style={{padding : 8 , flexDirection:'row' , alignItems:'center'}}>
-                    <Avatar.Icon size={30} />
-                    <Text style={{marginLeft : 10 , fontSize:13 , fontWeight:'bold'}}>{item.user.name}</Text>
-              </View>
+            <View
+              style={{
+                flex: 1,
+                margin: 5,
+                borderWidth: 1,
+                borderColor: "grey",
+              }}
+            >
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("Profile", { uid: item.user.uid })
+                }
+              >
+                <View
+                  style={{
+                    padding: 8,
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <Avatar.Icon size={30} />
+                  <Text
+                    style={{ marginLeft: 10, fontSize: 13, fontWeight: "bold" }}
+                  >
+                    {item.user.name}
+                  </Text>
+                </View>
               </TouchableOpacity>
               <Image
-                style={{ width: '100%' , height : 300}}
+                style={{ width: "100%", height: 300 }}
                 source={{ uri: item.DownloadURL }}
               />
-              <View style={{padding : 10}}>
-                <Text style={{fontSize : 12 , fontWeight : 'bold'}}>{item.caption}</Text>
+              <View style={{ padding: 10 }}>
+                <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+                  {item.caption}
+                </Text>
               </View>
+              <Pressable
+                onPress={() =>
+                  navigation.navigate("Comments", {
+                    uid: item.user.uid,
+                    postId: item.id,
+                  })
+                }
+              >
+                <Text>View Comments</Text>
+              </Pressable>
             </View>
           )}
         />
