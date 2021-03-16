@@ -13,12 +13,20 @@ import * as Animatable from "react-native-animatable";
 import { useSelector } from "react-redux";
 import { Title, Avatar, Caption } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 const Profile = ({ navigation }) => {
   const usersState = useSelector((state) => state.users);
   const userState = useSelector((state) => state.user);
 
   const [post, setPost] = useState([]);
+  const [like , setLike] = useState(false);
+
+  const likeToggle = ()=>{
+    setLike(!like);
+  }
   useEffect(() => {
     let posts = [];
     if (usersState.usersLoaded == userState.following.length) {
@@ -44,8 +52,8 @@ const Profile = ({ navigation }) => {
       <Animatable.View animation="bounceInUp" style={styles.container}>
         <View style={styles.headContainer}>
           <MaterialCommunityIcons color="#fff" name="menu" size={24} />
-          <Title style={{ fontWeight: "bold" , color:'#FFFFFF' }}>Instagram</Title>
-          {/* <MaterialCommunityIcons name="plus" color="#fff" size={24} /> */}
+          <Title style={{  color:'#FFFFFF' }}>Instagram</Title>
+          <MaterialCommunityIcons onPress={()=>navigation.navigate('Add')} name="telegram" color="#fff" size={24} />
         </View>
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
@@ -58,11 +66,13 @@ const Profile = ({ navigation }) => {
   }
   return (
     <Animatable.View animation="bounceInUp" style={styles.container}>
+     
       <View style={styles.headContainer}>
-        <MaterialCommunityIcons name="menu" size={24} />
-        <Title style={{ fontWeight: "bold" }}>Instagram</Title>
-        <MaterialCommunityIcons name="home" size={24} />
-      </View>
+          <MaterialCommunityIcons color="#fff" name="menu" size={24} />
+          <Title style={{ color:'#FFFFFF' }}>Instagram</Title>
+          <MaterialCommunityIcons onPress={()=>navigation.navigate('Add')} name="telegram" color="#fff" size={24} />
+        </View>
+
       <View style={{ flex: 1 }}>
         <FlatList
           numColumns={1}
@@ -72,9 +82,10 @@ const Profile = ({ navigation }) => {
             <View
               style={{
                 flex: 1,
-                margin: 5,
-                borderWidth: 1,
-                borderColor: "grey",
+                borderBottomWidth: 0.5,
+                borderColor: "#e91e63",
+                paddingBottom : 10
+
               }}
             >
               <TouchableOpacity
@@ -89,7 +100,7 @@ const Profile = ({ navigation }) => {
                     alignItems: "center",
                   }}
                 >
-                  <Avatar.Icon size={30} />
+                 <FontAwesome name="user-circle-o" size={24} color="black" />
                   <Text
                     style={{ marginLeft: 10, fontSize: 13, fontWeight: "bold" }}
                   >
@@ -101,12 +112,28 @@ const Profile = ({ navigation }) => {
                 style={{ width: "100%", height: 300 }}
                 source={{ uri: item.DownloadURL }}
               />
-              <View style={{ padding: 10 }}>
+              <View style={{flexDirection :'row' , padding : 10 , justifyContent:'space-between' ,alignItems:'center'}}>
+                 
+                  <View style={{flexDirection:'row'}}>
+                  <AntDesign  name="heart" size={24} color="#e91e63" />
+                  <FontAwesome5 onPress={() =>
+                  navigation.navigate("Comments", {
+                    uid: item.user.uid,
+                    postId: item.id,
+                  })} style={{marginLeft : 10 }} name="comment" size={24} color="black" />
+                  <FontAwesome5 style={{marginLeft : 10 }} name="telegram-plane" size={24} color="black" />
+                  </View>
+                  <View >
+                   <FontAwesome name="bookmark-o" size={24} color="black" />
+                  </View>
+              </View>
+              <View style={{ paddingLeft: 10 , paddingRight : 10 }}>
                 <Text style={{ fontSize: 12, fontWeight: "bold" }}>
                   {item.caption}
                 </Text>
               </View>
               <Pressable
+              style={{paddingLeft : 10}}
                 onPress={() =>
                   navigation.navigate("Comments", {
                     uid: item.user.uid,
@@ -114,7 +141,7 @@ const Profile = ({ navigation }) => {
                   })
                 }
               >
-                <Text>View Comments</Text>
+                <Text>View Comments...</Text>
               </Pressable>
             </View>
           )}
